@@ -92,7 +92,10 @@ h1 {
 .controls {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .new-game-btn {
@@ -109,6 +112,101 @@ h1 {
 
 .new-game-btn:hover {
     background: #9f8a76;
+}
+
+/* Difficulty Scale UI */
+.difficulty-control {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.difficulty-track {
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.difficulty-track::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #cdc1b4;
+    transform: translateY(-50%);
+    border-radius: 2px;
+}
+
+.difficulty-fill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(to right, #f2b179, #f67c5f);
+    transform: translateY(-50%);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.difficulty-markers {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 1;
+}
+
+.difficulty-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+}
+
+.marker-dot {
+    width: 16px;
+    height: 16px;
+    background: #cdc1b4;
+    border: 3px solid #faf8ef;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.difficulty-marker:hover .marker-dot {
+    transform: scale(1.2);
+    background: #bbada0;
+}
+
+.difficulty-marker.active .marker-dot {
+    width: 20px;
+    height: 20px;
+    background: #f67c5f;
+    border-color: #faf8ef;
+    box-shadow: 0 3px 6px rgba(246, 124, 95, 0.4);
+}
+
+.marker-label {
+    position: absolute;
+    top: 28px;
+    font-size: 11px;
+    color: #776e65;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.difficulty-marker.active .marker-label {
+    color: #f67c5f;
+    font-weight: bold;
 }
 
 .game-container {
@@ -336,6 +434,147 @@ h1 {
     font-size: 24px;
 }
 
+/* Zoom Progress Button */
+.zoom-progress-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Locked state */
+.zoom-progress-btn:disabled {
+    background: #bbada0;
+    color: #f9f6f2;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Unlocked state */
+.zoom-progress-btn:not(:disabled) {
+    background: #8f7a66;
+    color: #f9f6f2;
+    cursor: pointer;
+}
+
+.zoom-progress-btn:not(:disabled):hover {
+    background: #9f8a76;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.zoom-progress-btn:not(:disabled):active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.btn-text {
+    line-height: 1;
+}
+
+/* Modal Overlay */
+.progress-zoom-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.progress-zoom-modal.active {
+    display: flex;
+}
+
+.zoom-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.zoom-image {
+    max-width: 100%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    animation: zoomIn 0.3s ease;
+}
+
+.zoom-close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 32px;
+    font-weight: bold;
+    color: #776e65;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    line-height: 1;
+}
+
+.zoom-close-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.zoom-close-btn:active {
+    transform: scale(0.95);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 @keyframes progressReveal {
     0% {
         transform: scaleY(0);
@@ -367,10 +606,27 @@ h1 {
         min-width: 60px;
     }
 
+    .controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+
     .new-game-btn,
     .try-again-btn {
         padding: 12px 24px;
         font-size: 16px;
+        width: 100%;
+    }
+
+    .difficulty-control {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .marker-label {
+        font-size: 10px;
+        top: 26px;
     }
 
     .instructions {
@@ -380,5 +636,26 @@ h1 {
 
     .progress-bar {
         height: clamp(60px, 15vw, 100px);
+    }
+
+    .zoom-progress-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+
+    .btn-icon {
+        font-size: 16px;
+    }
+
+    .zoom-close-btn {
+        width: 44px;
+        height: 44px;
+        top: 10px;
+        right: 10px;
+        font-size: 28px;
+    }
+
+    .zoom-content {
+        padding: 10px;
     }
 }

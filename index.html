@@ -1,96 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Play the classic 2048 puzzle game. Join the tiles to reach 2048!">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta
+      name="description"
+      content="Play the classic 2048 puzzle game. Join the tiles to reach 2048!"
+    />
     <title>2048 Game</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>2048</h1>
-            <div class="scores-container">
-                <div class="score-container">
-                    <div class="score-title">Score</div>
-                    <div class="score-value" id="score">0</div>
-                </div>
-                <div class="score-container">
-                    <div class="score-title">Best</div>
-                    <div class="score-value" id="best">0</div>
-                </div>
+      <div class="header">
+        <h1>2048</h1>
+        <div class="scores-container">
+          <div class="score-container">
+            <div class="score-title">Score</div>
+            <div class="score-value" id="score">0</div>
+          </div>
+          <div class="score-container">
+            <div class="score-title">Best</div>
+            <div class="score-value" id="best">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-intro">
+        Join the tiles, get to <strong>2048!</strong>
+      </div>
+
+      <div class="controls">
+        <button class="new-game-btn" onclick="game.restart()">New Game</button>
+
+        <div class="difficulty-control">
+          <div class="difficulty-track">
+            <div class="difficulty-fill" id="difficulty-fill"></div>
+            <div class="difficulty-markers">
+              <button
+                class="difficulty-marker active"
+                data-level="1"
+                data-difficulty="beginner"
+                aria-label="Beginner difficulty"
+              >
+                <span class="marker-dot"></span>
+                <span class="marker-label">Beginner</span>
+              </button>
+              <button
+                class="difficulty-marker"
+                data-level="2"
+                data-difficulty="easy"
+                aria-label="Easy difficulty"
+              >
+                <span class="marker-dot"></span>
+                <span class="marker-label">Easy</span>
+              </button>
+              <button
+                class="difficulty-marker"
+                data-level="3"
+                data-difficulty="medium"
+                aria-label="Medium difficulty"
+              >
+                <span class="marker-dot"></span>
+                <span class="marker-label">Medium</span>
+              </button>
+              <button
+                class="difficulty-marker"
+                data-level="4"
+                data-difficulty="hard"
+                aria-label="Hard difficulty"
+              >
+                <span class="marker-dot"></span>
+                <span class="marker-label">Hard</span>
+              </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-container">
+        <div class="grid-container">
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+        </div>
+        <div class="tile-container" id="tile-container"></div>
+        <div class="game-message" id="game-message">
+          <h2 id="message-title"></h2>
+          <p id="message-text"></p>
+          <button class="try-again-btn" onclick="game.restart()">
+            Try Again
+          </button>
+        </div>
+      </div>
+
+      <div class="instructions">
+        Use <strong>Arrow Keys</strong>, <strong>WASD</strong>, or
+        <strong>swipe</strong> to move tiles. Tiles with the same number merge
+        into one when they touch!
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-title">Journey to 2048</div>
+        <div class="progress-bar" id="progress-bar">
+          <div class="progress-section" data-value="4"></div>
+          <div class="progress-section" data-value="8"></div>
+          <div class="progress-section" data-value="16"></div>
+          <div class="progress-section" data-value="32"></div>
+          <div class="progress-section" data-value="64"></div>
+          <div class="progress-section" data-value="128"></div>
+          <div class="progress-section" data-value="256"></div>
+          <div class="progress-section" data-value="512"></div>
+          <div class="progress-section" data-value="1024"></div>
+          <div class="progress-section" data-value="2048"></div>
+        </div>
+        <div class="progress-text">
+          <span class="current-value" id="current-max">2</span> /
+          <span id="target-value">2048</span>
         </div>
 
-        <div class="game-intro">
-            Join the tiles, get to <strong>2048!</strong>
-        </div>
+        <button
+          id="zoom-progress-btn"
+          class="zoom-progress-btn"
+          disabled
+          aria-label="View enlarged progress bar"
+        >
+          <span class="btn-icon" id="zoom-btn-icon">🔒</span>
+          <span class="btn-text" id="zoom-btn-text"
+            >Locked - Reach <span id="zoom-target">2048</span></span
+          >
+        </button>
+      </div>
+    </div>
 
-        <div class="controls">
-            <button class="new-game-btn" onclick="game.restart()">New Game</button>
-        </div>
-
-        <div class="game-container">
-            <div class="grid-container">
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-                <div class="grid-row">
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                </div>
-            </div>
-            <div class="tile-container" id="tile-container"></div>
-            <div class="game-message" id="game-message">
-                <h2 id="message-title"></h2>
-                <p id="message-text"></p>
-                <button class="try-again-btn" onclick="game.restart()">Try Again</button>
-            </div>
-        </div>
-
-        <div class="instructions">
-            Use <strong>Arrow Keys</strong>, <strong>WASD</strong>, or <strong>swipe</strong> to move tiles.
-            Tiles with the same number merge into one when they touch!
-        </div>
-
-        <div class="progress-container">
-            <div class="progress-title">Journey to 2048</div>
-            <div class="progress-bar" id="progress-bar">
-                <div class="progress-section" data-value="4"></div>
-                <div class="progress-section" data-value="8"></div>
-                <div class="progress-section" data-value="16"></div>
-                <div class="progress-section" data-value="32"></div>
-                <div class="progress-section" data-value="64"></div>
-                <div class="progress-section" data-value="128"></div>
-                <div class="progress-section" data-value="256"></div>
-                <div class="progress-section" data-value="512"></div>
-                <div class="progress-section" data-value="1024"></div>
-                <div class="progress-section" data-value="2048"></div>
-            </div>
-            <div class="progress-text">
-                <span class="current-value" id="current-max">2</span> / 2048
-            </div>
-        </div>
+    <div
+      id="progress-zoom-modal"
+      class="progress-zoom-modal"
+      aria-hidden="true"
+    >
+      <button
+        class="zoom-close-btn"
+        id="zoom-close-btn"
+        aria-label="Close zoomed view"
+      >
+        ×
+      </button>
+      <div class="zoom-content">
+        <img
+          id="zoom-progress-image"
+          src=""
+          alt="Enlarged image"
+          class="zoom-image"
+        />
+      </div>
     </div>
 
     <script src="js/game.js"></script>
-</body>
+  </body>
 </html>
